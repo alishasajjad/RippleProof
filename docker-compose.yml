@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rippleproof-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: rippleproof
+      POSTGRES_USER: rippleproof
+      POSTGRES_PASSWORD: rippleproof
+
+    ports:
+      - "5435:5432"
+
+    volumes:
+      - rippleproof_pgdata:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U rippleproof -d rippleproof"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+
+volumes:
+  rippleproof_pgdata:

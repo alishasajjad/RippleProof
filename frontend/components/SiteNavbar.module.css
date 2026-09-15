@@ -1,0 +1,830 @@
+.header {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+
+  width: 100%;
+
+  background:
+    rgba(
+      2,
+      17,
+      31,
+      0.96
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      91,
+      190,
+      255,
+      0.12
+    );
+
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
+
+}
+
+
+
+
+
+.inner {
+
+  width:100%;
+
+  min-height:96px;
+
+  padding:
+    0 46px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:
+    space-between;
+
+  gap:32px;
+
+}
+
+
+
+
+
+/* ============================
+   BRAND
+============================ */
+
+
+.brand {
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  flex-shrink:0;
+
+  text-decoration:none;
+
+  color:inherit;
+
+}
+
+
+
+.logo {
+
+  width:50px;
+
+  height:50px;
+
+  border-radius:13px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  color:#70f2dc;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(
+        37,
+        188,
+        179,
+        0.28
+      ),
+      rgba(
+        41,
+        132,
+        174,
+        0.18
+      )
+    );
+
+
+  border:
+
+    1px solid
+
+    rgba(
+      86,
+      230,
+      210,
+      0.25
+    );
+
+}
+
+
+
+
+
+.brandName {
+
+
+  color:#f5f8ff;
+
+
+  font-size:20px;
+
+
+  line-height:1.1;
+
+
+  font-weight:800;
+
+}
+
+
+
+
+
+.brandTagline {
+
+
+  margin-top:5px;
+
+
+  color:#708ca9;
+
+
+  font-size:13px;
+
+
+  font-weight:500;
+
+
+}
+
+
+
+
+
+
+
+/* ============================
+   NAVIGATION
+============================ */
+
+
+.navigation {
+
+
+  display:flex;
+
+
+  align-items:center;
+
+
+  justify-content:center;
+
+
+  gap:10px;
+
+
+  flex:1;
+
+
+}
+
+
+
+
+
+.navItem {
+
+
+  min-height:48px;
+
+
+  padding:
+    0 17px;
+
+
+  display:inline-flex;
+
+
+  align-items:center;
+
+
+  justify-content:center;
+
+
+  gap:9px;
+
+
+  color:#7e99b8;
+
+
+  border:
+
+    1px solid
+
+    transparent;
+
+
+  border-radius:11px;
+
+
+  text-decoration:none;
+
+
+  font-size:15px;
+
+
+  font-weight:700;
+
+
+  white-space:nowrap;
+
+
+  transition:
+
+    background .18s ease,
+
+    border-color .18s ease,
+
+    color .18s ease,
+
+    transform .18s ease;
+
+
+}
+
+
+
+
+
+.navItem:hover {
+
+
+  color:#eaf5ff;
+
+
+  background:
+
+    rgba(
+      48,
+      126,
+      190,
+      0.1
+    );
+
+
+  border-color:
+
+    rgba(
+      77,
+      170,
+      235,
+      0.16
+    );
+
+
+  transform:
+    translateY(-1px);
+
+
+}
+
+
+
+
+
+.navItemActive {
+
+
+  color:#f7fbff;
+
+
+  background:
+
+    linear-gradient(
+
+      135deg,
+
+      rgba(
+        37,
+        105,
+        161,
+        0.32
+      ),
+
+      rgba(
+        26,
+        77,
+        117,
+        0.22
+      )
+
+    );
+
+
+  border-color:
+
+    rgba(
+      89,
+      180,
+      241,
+      0.28
+    );
+
+}
+
+
+
+
+
+
+/* ============================
+   ACTIONS
+============================ */
+
+
+.actions {
+
+
+  display:flex;
+
+
+  align-items:center;
+
+
+  justify-content:flex-end;
+
+
+  gap:10px;
+
+
+  flex-shrink:0;
+
+
+}
+
+
+
+
+
+.signInButton,
+
+.getStartedButton,
+
+.productionBadge {
+
+
+  min-height:44px;
+
+
+  display:inline-flex;
+
+
+  align-items:center;
+
+
+  justify-content:center;
+
+
+  gap:8px;
+
+
+  border-radius:999px;
+
+
+  white-space:nowrap;
+
+
+  text-decoration:none;
+
+
+  font-size:14px;
+
+
+  font-weight:750;
+
+
+  transition:
+
+    transform .18s ease,
+
+    background .18s ease,
+
+    border-color .18s ease,
+
+    box-shadow .18s ease;
+
+
+}
+
+
+
+
+
+
+.signInButton {
+
+
+  padding:
+    0 17px;
+
+
+  color:#d6e8f8;
+
+
+  background:
+
+    rgba(
+      13,
+      43,
+      68,
+      0.6
+    );
+
+
+  border:
+
+    1px solid
+
+    rgba(
+      113,
+      175,
+      221,
+      0.22
+    );
+
+}
+
+
+
+
+.signInButton:hover {
+
+
+  color:#ffffff;
+
+
+  background:
+
+    rgba(
+      24,
+      69,
+      101,
+      0.78
+    );
+
+
+  border-color:
+
+    rgba(
+      114,
+      197,
+      255,
+      0.38
+    );
+
+
+  transform:
+
+    translateY(-1px);
+
+}
+
+
+
+
+
+
+.getStartedButton {
+
+
+  padding:
+
+    0 18px;
+
+
+  color:#031a24;
+
+
+  background:
+
+    linear-gradient(
+
+      135deg,
+
+      #68e2d0,
+
+      #46b9f0
+
+    );
+
+
+  border:
+
+    1px solid
+
+    rgba(
+      121,
+      240,
+      222,
+      0.5
+    );
+
+
+  box-shadow:
+
+    0 8px 24px
+
+    rgba(
+      46,
+      190,
+      220,
+      0.12
+    );
+
+}
+
+
+
+
+
+.getStartedButton:hover {
+
+
+  transform:
+
+    translateY(-1px);
+
+
+  box-shadow:
+
+    0 10px 28px
+
+    rgba(
+      46,
+      190,
+      220,
+      0.22
+    );
+
+}
+
+
+
+
+
+
+.productionBadge {
+
+
+  padding:
+
+    0 18px;
+
+
+  color:#7ff0d8;
+
+
+  background:
+
+    rgba(
+      1,
+      45,
+      51,
+      0.38
+    );
+
+
+  border:
+
+    1px solid
+
+    rgba(
+      57,
+      211,
+      180,
+      0.25
+    );
+
+
+}
+
+
+
+
+
+
+
+/* ============================
+   RESPONSIVE
+============================ */
+
+
+@media(max-width:1280px){
+
+
+.inner{
+
+
+  padding:
+
+    0 24px;
+
+
+  gap:18px;
+
+
+}
+
+
+
+.navItem{
+
+
+  padding:
+
+    0 12px;
+
+
+}
+
+
+
+.productionBadge{
+
+
+  display:none;
+
+
+}
+
+
+}
+
+
+
+
+
+
+@media(max-width:980px){
+
+
+.inner{
+
+
+  min-height:auto;
+
+
+  padding:
+
+    16px 20px;
+
+
+  flex-wrap:wrap;
+
+
+}
+
+
+
+
+.navigation{
+
+
+  order:3;
+
+
+  width:100%;
+
+
+  overflow-x:auto;
+
+
+  justify-content:flex-start;
+
+
+  padding-top:6px;
+
+
+  scrollbar-width:none;
+
+
+}
+
+
+
+.navigation::-webkit-scrollbar{
+
+
+  display:none;
+
+
+}
+
+
+}
+
+
+
+
+
+
+@media(max-width:640px){
+
+
+.brandTagline{
+
+
+  display:none;
+
+
+}
+
+
+
+
+.brandName{
+
+
+  font-size:17px;
+
+
+}
+
+
+
+
+.logo{
+
+
+  width:43px;
+
+
+  height:43px;
+
+
+}
+
+
+
+
+.signInButton span,
+
+.getStartedButton span{
+
+
+  display:none;
+
+
+}
+
+
+
+
+.signInButton,
+
+.getStartedButton{
+
+
+  width:43px;
+
+
+  height:43px;
+
+
+  padding:0;
+
+
+}
+
+
+
+
+.navItem{
+
+
+  font-size:14px;
+
+
+}
+
+
+}

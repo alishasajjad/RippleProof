@@ -1,0 +1,27 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.pytest_cache/
+*.pyc
+
+# Secrets
+backend/.env
+.env
+
+# Local database
+backend/rippleproof.db
+backend/tests/phase3_test.db
+*.db
+
+# Node
+frontend/node_modules/
+frontend/.next/
+
+# Environment
+frontend/.env.local
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
