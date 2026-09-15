@@ -3,16 +3,8 @@ from typing import Generator
 
 from dotenv import load_dotenv
 
-from sqlalchemy import (
-    create_engine,
-    text,
-)
-
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    Session,
-    sessionmaker,
-)
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 
 # ---------------------------------------------------------
@@ -27,23 +19,48 @@ DATABASE_URL = os.getenv(
     "sqlite:///./rippleproof.db",
 )
 
+
+# ---------------------------------------------------------
+# PostgreSQL URL normalization
+# ---------------------------------------------------------
+#
+# Railway commonly provides:
+#
+#   postgresql://user:password@host:port/database
+#
+# Plain "postgresql://" makes SQLAlchemy use the psycopg2
+# dialect by default.
+#
+# RippleProof uses Psycopg 3, whose SQLAlchemy dialect is:
+#
+#   postgresql+psycopg://
+#
+# This conversion keeps Railway configuration simple while
+# ensuring SQLAlchemy always uses Psycopg 3.
+# ---------------------------------------------------------
+
 if DATABASE_URL.startswith("postgresql://"):
     DATABASE_URL = DATABASE_URL.replace(
         "postgresql://",
         "postgresql+psycopg://",
-        1
+        1,
+    )
+
+elif DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://",
+        "postgresql+psycopg://",
+        1,
     )
 
 
 # ---------------------------------------------------------
-# SQLAlchemy engine
+# SQLAlchemy engine configuration
 # ---------------------------------------------------------
 
 connect_args = {}
 
-if DATABASE_URL.startswith(
-    "sqlite"
-):
+if DATABASE_URL.startswith("sqlite"):
     connect_args = {
         "check_same_thread": False,
     }
@@ -68,23 +85,21 @@ SessionLocal = sessionmaker(
 # Declarative base
 # ---------------------------------------------------------
 
-class Base(
-    DeclarativeBase
-):
+class Base(DeclarativeBase):
     pass
 
 
 # ---------------------------------------------------------
-# Initialization
+# Database initialization
 # ---------------------------------------------------------
 
 def init_db() -> None:
     """
-    Import SQLAlchemy models and create
-    any missing database tables.
+    Import RippleProof SQLAlchemy models and create any
+    database tables that do not already exist.
 
-    For the hackathon MVP this replaces
-    a full migration framework.
+    For the hackathon MVP this is used instead of a full
+    database migration framework.
     """
 
     from app import models  # noqa: F401
@@ -95,14 +110,14 @@ def init_db() -> None:
 
 
 # ---------------------------------------------------------
-# FastAPI dependency
+# FastAPI database dependency
 # ---------------------------------------------------------
 
-def get_db() -> Generator[
-    Session,
-    None,
-    None,
-]:
+def get_db() -> Generator[Session, None, None]:
+    """
+    Provide one SQLAlchemy database session per request.
+    """
+
     db = SessionLocal()
 
     try:
@@ -118,58 +133,39 @@ def get_db() -> Generator[
 
 def database_status() -> dict:
     """
-    Check whether RippleProof can
-    communicate with its database.
-
-    Does not expose credentials.
+    Check whether RippleProof can communicate with the
+    configured database without exposing credentials.
     """
 
-    backend = (
-        engine.url
-        .get_backend_name()
-    )
+    backend = engine.url.get_backend_name()
 
     result = {
         "configured": True,
         "connected": False,
         "backend": backend,
-        "database": (
-            engine.url.database
-        ),
+        "database": engine.url.database,
         "host": (
             engine.url.host
-            if backend
-            != "sqlite"
+            if backend != "sqlite"
             else "local-file"
         ),
-        "port": (
-            engine.url.port
-        ),
+        "port": engine.url.port,
     }
 
     try:
-
         with engine.connect() as connection:
-
             connection.execute(
                 text("SELECT 1")
             )
 
-        result[
-            "connected"
-        ] = True
+        result["connected"] = True
 
-        result[
-            "message"
-        ] = (
+        result["message"] = (
             "Database connection successful."
         )
 
     except Exception as exc:
-
-        result[
-            "message"
-        ] = (
+        result["message"] = (
             f"{type(exc).__name__}: {exc}"
         )
 
