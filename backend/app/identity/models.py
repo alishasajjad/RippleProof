@@ -14,15 +14,48 @@ from sqlalchemy import (
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 
+# ============================================================
+# Database Configuration
+# ============================================================
+
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql+psycopg://rippleproof:rippleproof@127.0.0.1:5435/rippleproof",
-)
+).strip()
 
+
+# Railway normally provides:
+# postgresql://user:password@host:port/database
+#
+# SQLAlchemy may interpret plain "postgresql://" as psycopg2.
+# RippleProof uses psycopg v3, so force the correct driver.
+
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgresql://",
+        "postgresql+psycopg://",
+        1,
+    )
+
+elif DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://",
+        "postgresql+psycopg://",
+        1,
+    )
+
+
+# ============================================================
+# SQLAlchemy Base
+# ============================================================
 
 class IdentityBase(DeclarativeBase):
     pass
 
+
+# ============================================================
+# User Model
+# ============================================================
 
 class User(IdentityBase):
     __tablename__ = "rp_users"
@@ -57,6 +90,10 @@ class User(IdentityBase):
     )
 
 
+# ============================================================
+# Team Model
+# ============================================================
+
 class Team(IdentityBase):
     __tablename__ = "rp_teams"
 
@@ -78,6 +115,10 @@ class Team(IdentityBase):
     )
 
 
+# ============================================================
+# Team Member Model
+# ============================================================
+
 class TeamMember(IdentityBase):
     __tablename__ = "rp_team_members"
 
@@ -89,14 +130,20 @@ class TeamMember(IdentityBase):
 
     team_id: Mapped[str] = mapped_column(
         String(36),
-        ForeignKey("rp_teams.id", ondelete="CASCADE"),
+        ForeignKey(
+            "rp_teams.id",
+            ondelete="CASCADE",
+        ),
         index=True,
         nullable=False,
     )
 
     user_id: Mapped[str] = mapped_column(
         String(36),
-        ForeignKey("rp_users.id", ondelete="CASCADE"),
+        ForeignKey(
+            "rp_users.id",
+            ondelete="CASCADE",
+        ),
         index=True,
         nullable=False,
     )
@@ -122,10 +169,19 @@ class TeamMember(IdentityBase):
     )
 
 
+# ============================================================
+# Database Engine
+# ============================================================
+
 identity_engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
 )
+
+
+# ============================================================
+# Database Session
+# ============================================================
 
 IdentitySession = sessionmaker(
     bind=identity_engine,
@@ -134,5 +190,12 @@ IdentitySession = sessionmaker(
 )
 
 
+# ============================================================
+# Database Initialization
+# ============================================================
+
 def init_identity_tables() -> None:
+    """
+    Create RippleProof identity/team tables if they do not exist.
+    """
     IdentityBase.metadata.create_all(bind=identity_engine)
