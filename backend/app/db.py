@@ -27,6 +27,13 @@ DATABASE_URL = os.getenv(
     "sqlite:///./rippleproof.db",
 )
 
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgresql://",
+        "postgresql+psycopg://",
+        1
+    )
+
 
 # ---------------------------------------------------------
 # SQLAlchemy engine
